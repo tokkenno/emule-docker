@@ -1,0 +1,11 @@
+#########################################
+# Static Servers File 
+# input only one server per line 
+# 
+# Format: Server IP or Hostname, Port, Server Name 
+# Example: 
+# 120.120.120.120:4661,ServerName 
+# myserver.yi.org:4662,Testserver2
+#
+# Comment lines begin with # or /
+
