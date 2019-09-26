@@ -16,6 +16,16 @@ PREFERENCES_PATH="${BASE_PATH}/preferences.ini"
 PREFERENCES_PATH_BAK="${PREFERENCES_PATH}.bak"
 
 if [ -f "$PREFERENCES_PATH" ]; then
+    echo "Creating data directories..."
+    mkdir -p /data/download && mkdir -p /data/tmp
+
+    if [ $UID != "0" ]; then
+        echo "Fixing permissions..."
+        useradd --shell /bin/bash -u ${UID} -U -d /app -s /bin/false emule && \
+        usermod -G users emule
+        chown -R ${UID}:${GID} /data && chown -R ${UID}:${GID} /app
+    fi
+
     echo "Applying configuration..."
     cp -f $PREFERENCES_PATH $PREFERENCES_PATH_BAK
     # sed "s/Nick=.*$/Nick=${EMULE_USERNAME}/; s/MaxConnections=.*$/MaxConnections=${EMULE_MAX_CONNECTIONS}/; s/^Port=.*$/Port=${EMULE_TCP_PORT}/; s/^UDPPort=.*$/UDPPort=${EMULE_UDP_PORT}/; s/^DownloadCapacity=.*$/DownloadCapacity=${EMULE_DOWNLOAD_CAPACITY}/; s/^UploadCapacityNew=.*$/UploadCapacityNew=${EMULE_UPLOAD_CAPACITY}/; s/^Autoconnect=.*$/Autoconnect=${EMULE_AUTOCONNECT}/; s/^FileBufferSize=.*$/FileBufferSize=${EMULE_BUFFER_SIZE}/; s/^Enabled=.*$/Enabled=${EMULE_WEB_ENABLED}/; s/^Password=.*$/Password=${EMULE_WEB_PASSWORD}/" ${PREFERENCES_PATH_BAK} > ${PREFERENCES_PATH}
