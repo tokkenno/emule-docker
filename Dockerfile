@@ -1,6 +1,11 @@
+FROM golang:1.13-stretch AS launcher-builder
+
+WORKDIR /root
+COPY launcher /root
+RUN go build -o launcher
+
 FROM ubuntu:bionic
 MAINTAINER Aitor González
-
 
 ENV UID 0
 ENV GUI 0
@@ -8,11 +13,6 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV LC_ALL C.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
-
-ENV EMULE_USERNAME https://emule-project.net
-ENV EMULE_MAX_CONNECTIONS 3500
-ENV EMULE_TCP_PORT 23732
-ENV EMULE_UDP_PORT 23733
 
 WORKDIR /root
 
@@ -28,7 +28,7 @@ RUN wget -nc https://dl.winehq.org/wine-builds/winehq.key && \
 
 WORKDIR /app
 
-RUN curl https://files.emule-project.net/eMule0.51d.zip --output /tmp/emule.zip && \
+RUN curl https://www.emule-project.net/files/emule/eMule0.51d.zip --output /tmp/emule.zip && \
     unzip /tmp/emule.zip -d /tmp && mv /tmp/eMule0.51d/* /app
 
 ENV WINEPREFIX /app/.wine
@@ -37,6 +37,7 @@ ENV DISPLAY :0
     
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY scripts /app
+COPY --from=launcher-builder /root/launcher /app
 COPY config/emule /app/config
 
 EXPOSE 4711/tcp 23732/tcp 23733/udp
