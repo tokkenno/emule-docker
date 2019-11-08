@@ -21,5 +21,17 @@ fi
 echo "Applying configuration..."
 /app/launcher
 
-echo "Running services..."
-/usr/bin/supervisord
+echo "Running virtual desktop..."
+/usr/bin/supervisord -n &
+
+echo "Waiting to run emule... 5"
+sleep 5
+echo "Waiting to run emule... 4"
+sleep 5
+echo "Waiting to run emule... 3"
+sleep 5
+echo "Waiting to run emule... 2"
+sleep 5
+echo "Waiting to run emule... 1"
+sleep 5
+/usr/bin/wine /app/emule.exe

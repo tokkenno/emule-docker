@@ -23,6 +23,7 @@ Emule over wine, "daemonized" inside a docker
 ## Ports
 
 - `4711/tcp`: Web control panel
+- `8080/tcp`: Web VNC desktop (Optional)
 - `23732/tcp`: Edonkey network
 - `23733/udp`: Kad network
 

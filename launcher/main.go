@@ -45,6 +45,12 @@ func main() {
 		{env: "", iniSection: "eMule", iniKey: "FilterBadIPs", defaultVal: "1"},
 		{env: "", iniSection: "eMule", iniKey: "Autoconnect", defaultVal: "1"},
 		{env: "", iniSection: "eMule", iniKey: "Verbose", defaultVal: "1"},
+		{env: "", iniSection: "eMule", iniKey: "IncomingDir", defaultVal: "Z:\\data\\download"},
+		{env: "", iniSection: "eMule", iniKey: "TempDir", defaultVal: "Z:\\data\\tmp"},
+		{env: "", iniSection: "eMule", iniKey: "NotifierConfiguration", defaultVal: "Z:\\app\\config\\Notifier.ini"},
+		{env: "", iniSection: "eMule", iniKey: "WebTemplateFile", defaultVal: "Z:\\app\\config\\eMule.tmpl"},
+		{env: "", iniSection: "eMule", iniKey: "ToolbarBitmapFolder", defaultVal: "Z:\\app\\skins"},
+		{env: "", iniSection: "eMule", iniKey: "SkinProfileDir", defaultVal: "Z:\\app\\skins"},
 		{env: "", iniSection: "WebServer", iniKey: "Enabled", defaultVal: "1"},
 		{env: "", iniSection: "UPnP", iniKey: "EnableUPnP", defaultVal: "0"},
 	}
@@ -58,11 +64,13 @@ func main() {
 	}
 
 	for _, preference := range preferences {
+		propertyValue := preference.defaultVal
 		if preference.env != "" && os.Getenv(preference.env) != "" {
-			cfg.Section(preference.iniSection).Key(preference.iniKey).SetValue(os.Getenv(preference.env))
-		} else {
-			cfg.Section(preference.iniSection).Key(preference.iniKey).SetValue(preference.defaultVal)
+			propertyValue = os.Getenv(preference.env)
 		}
+
+		fmt.Println(fmt.Sprintf("Setting %s.%s => %s", preference.iniSection, preference.iniKey, propertyValue))
+		cfg.Section(preference.iniSection).Key(preference.iniKey).SetValue(propertyValue)
 	}
 
 	fmt.Println(fmt.Sprintf("Saving preferences file in %s", preferencesPath))
