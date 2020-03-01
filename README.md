@@ -1,7 +1,7 @@
 # emule-docker
 Emule over wine, "daemonized" inside a docker
 
-`docker run -p 4711:4711 -p 23732:23732 -p 23733:23733 -v emule_data:/data --name emule emule`
+`docker run -p 4711:4711 -p 23732:23732 -p 23733:23733 -v emule_data:/data --name emule reimashi/emule`
 
 ## Environment variables
 
